@@ -63,8 +63,10 @@
 **Response JSON**
 ```json
 {
-  "username": "string",
-  "password": "string"
+  "userID": "int",
+  "firstName": "string",
+  "lastName": "string",
+  "error": "string",
 }
 ```
 
