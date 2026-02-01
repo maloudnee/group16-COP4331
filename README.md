@@ -58,3 +58,74 @@
   "username": "string",
   "password": "string"
 }
+
+**Response JSON**
+```json
+{
+  "username": "string",
+  "password": "string"
+}
+
+### `SignUp.php`
+
+**Request JSON**
+```json
+{
+  "name": "string",
+  "username": "string",
+  "password": "string"
+}
+
+**Response JSON**
+```json
+{
+  "id": "int",
+  "firstName": "string",
+  "lastName": "string",
+  "error": "string"
+}
+
+### `SearchContacts.php`
+
+**Request JSON**
+```json
+{
+  "userID": "int",
+  "search": "string"
+}
+
+**Response JSON**
+```json
+{
+  "results": [
+    {
+      "firstName": "string",
+      "lastName": "string",
+      "phone": "string",
+      "email": "string",
+      "contactID": "int",
+      "error": "string"
+    }
+  ]
+}
+
+### `SearchContacts.php`
+
+**Request JSON**
+```json
+{
+  "userID": "int",
+  "firstName": "string",
+  "lastName": "string",
+  "phone": "string",
+  "email": "string"
+}
+
+**Response JSON**
+```json
+{
+  "error": "string"
+}
+
+### add other endpoints
+
