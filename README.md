@@ -58,6 +58,7 @@
   "username": "string",
   "password": "string"
 }
+```
 
 **Response JSON**
 ```json
@@ -65,6 +66,7 @@
   "username": "string",
   "password": "string"
 }
+```
 
 ### `SignUp.php`
 
@@ -75,6 +77,7 @@
   "username": "string",
   "password": "string"
 }
+```
 
 **Response JSON**
 ```json
@@ -84,6 +87,7 @@
   "lastName": "string",
   "error": "string"
 }
+```
 
 ### `SearchContacts.php`
 
@@ -93,6 +97,7 @@
   "userID": "int",
   "search": "string"
 }
+```
 
 **Response JSON**
 ```json
@@ -108,6 +113,7 @@
     }
   ]
 }
+```
 
 ### `SearchContacts.php`
 
@@ -120,12 +126,14 @@
   "phone": "string",
   "email": "string"
 }
+```
 
 **Response JSON**
 ```json
 {
   "error": "string"
 }
+```
 
 ### add other endpoints
 
