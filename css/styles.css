@@ -1,0 +1,452 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: #ffca80;
+  font-family: monospace;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#loginDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  transform: translateY(-7vh); 
+}
+
+#loginLogo {
+  width: 150px;
+  height: auto;
+}
+
+#loginTitle {
+  color: #D96120;
+  font-size: 30px;
+}
+
+.loginInputs {
+  font-size: 20px;
+  padding: 10px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border: none;
+  background-color: #ffb153;
+  border-radius: 10px;
+
+}
+
+.loginInputs:focus {
+  outline: none;
+  border-color: #ffa940;
+  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.3);
+}
+
+#createAccountNav {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 15px;
+  color: black;
+  text-decoration: underline;
+  margin-top: 4px;
+  cursor: pointer;
+}
+
+#createAccountNav:hover {
+  color: rgb(84, 84, 84);
+}
+
+#loginButton {
+  margin-top: 12px;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-family: monospace;
+  border: none;
+  border-radius: 10px;
+  background-color: #D96120;
+  color: white;
+  cursor: pointer;
+}
+
+#loginButton:hover {
+  background-color: #c2531c;
+}
+
+#loginButton:active {
+  transform: scale(0.98);
+}
+
+#createAccountDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  transform: translateY(-3vh);
+}
+
+#createAccountTitle {
+  color: #D96120;
+  font-size: 30px;
+}
+
+.createAccountInputs {
+  font-size: 20px;
+  padding: 10px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border: none;
+  background-color: #ffb153;
+  border-radius: 10px;
+}
+
+.createAccountInputs:focus {
+  outline: none;
+  border-color: #ffa940;
+  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.3);
+}
+
+#backToLoginButton {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 15px;
+  color: black;
+  text-decoration: underline;
+  margin-top: 4px;
+  cursor: pointer;
+}
+
+#backToLoginButton:hover {
+  color: rgb(84, 84, 84);
+}
+
+#createAccountButton {
+  margin-top: 12px;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-family: monospace;
+  border: none;
+  border-radius: 10px;
+  background-color: #D96120;
+  color: white;
+  cursor: pointer;
+}
+
+#createAccountButton:hover {
+  background-color: #c2531c;
+}
+
+#createAccountButton:active {
+  transform: scale(0.98);
+}
+
+.loginAndCreateAccountResult {
+  font-size: 15px;
+  color: red;
+  text-align: center;
+}
+
+#contactsDiv {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+#contactsHeader {
+  padding: 30px;
+  display: flex;
+  justify-content: end;
+}
+
+#logoutButton {
+  padding: 10px 20px;
+  font-size: 18px;
+  font-family: monospace;
+  border: none;
+  border-radius: 10px;
+  background-color: #D96120;
+  color: white;
+  cursor: pointer;
+}
+
+#logoutButton:hover {
+  background-color: #c2531c;
+}
+
+#logoutButton:active {
+  transform: scale(0.98);
+}
+
+#searchArea {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-top: 200px;
+  
+}
+
+#searchAndAddDiv {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+#addContactImg {
+  cursor: pointer;
+}
+
+#searchBar {
+  border-radius: 27px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 20px;
+  display: inline-block;
+  border: 3px solid #c2531c;
+}
+
+#searchIcon {
+  vertical-align: middle;
+  color:#e76626;
+}
+
+#searchInput {
+  background-color: transparent;
+  width: 500px;
+  border: none;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 25px;
+}
+
+#searchInput:focus {
+  border: none;
+  outline: none;
+}
+
+#resultsContainer {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 70px;
+  width: 500px;
+  flex: 1;  
+  min-height: 0;
+  position: relative;
+  display: none;
+}
+
+#results {
+  height: 100%;
+  overflow-y: auto;  
+  scrollbar-width: none;  
+  -ms-overflow-style: none;  
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.15);}
+
+#results::-webkit-scrollbar {
+  display: none;
+}
+
+.contact-card {
+  padding: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.contact-card:last-child {
+  border-bottom: none;
+}
+
+.contact-data {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contact-name {
+  font-weight: bold;
+  font-size: 16px;
+  color: #222;
+
+  border: none;    
+  background: transparent; 
+  padding: 0;     
+  width: auto;     
+  font-family: inherit; 
+  outline: none;     
+}
+
+.contact-info {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.4;
+
+  border: none;    
+  background: transparent; 
+  padding: 0;     
+  width: auto;     
+  font-family: inherit; 
+  outline: none;  
+  
+}
+
+.edit-contact {
+  margin-right: 20px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.edit-contact:hover svg {
+  stroke: rgb(80, 80, 80);
+} 
+
+.input-focus {
+  padding-left: 6px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.save-contact {
+  font-size: 19px;
+  padding: 6px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-radius: 5px;
+  margin-right: 20px;
+  background-color: #ffad29;
+  cursor: pointer;
+}
+
+.save-contact:hover {
+  background-color: #ff9d00;
+}
+
+
+#scrollUpArrow {
+  position: absolute;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  opacity: 0;                    
+  transition: opacity 0.4s ease; 
+}
+
+#scrollDownArrow {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  opacity: 0;                    
+  transition: opacity 0.3s ease; 
+}
+
+#scrollUpArrow.show, #scrollDownArrow.show {
+  opacity: 1;
+}
+
+
+#toast {
+  position: fixed;
+  top: 40px;
+  text-align: center;
+  background-color: #f28600;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  pointer-events: none; 
+  z-index: 50;
+  opacity: 0;                    
+  transition: opacity 0.4s ease; 
+}
+
+#toast.show {
+  opacity: 1;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #FFC77D; 
+  padding: 20px 30px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  position: relative;
+  color: #D9692B; 
+}
+
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 30px;
+  cursor: pointer;
+  color: #D9692B;
+}
+
+
+.modal input {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  background-color: #FFB35A; 
+}
+
+.modal input:focus {
+  outline: none;
+}
+
+
+.modal button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #D9692B; 
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.modal button:hover {
+  background-color: #BF5C23;
+}
+
+
+.hidden {
+  display: none !important;
+}

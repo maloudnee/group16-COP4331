@@ -1,0 +1,124 @@
+<html>
+<head>
+	<title>User Contacts</title>
+	<script type="text/javascript" src="js/code.js"></script>
+    <link href="css/styles.css" rel="stylesheet">	
+	
+	<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      readCookie();
+    }, false);
+
+    
+    document.addEventListener("keydown", (e) => {
+      const text = document.getElementById("searchInput").value;
+      if ((e.key === "Enter") && (text.trim() !== "") && (document.activeElement.id === "searchInput")) {
+        searchContacts();
+      }
+    });
+
+    function search () {
+      const text = document.getElementById("searchInput").value;
+      if (text.trim() !== ""){
+        searchContacts();
+      }
+    }
+	</script>
+	
+</head>
+<body>
+  <div id = "contactsDiv">
+    <div id = "contactsHeader">
+      <button id = "logoutButton" onclick="doLogout();">Log out</button>
+    </div>
+
+    <div id = "searchArea">
+      <div id = "searchAndAddDiv">
+        <div id = "searchBar"> 
+          <svg
+            id = "searchIcon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style = "cursor: pointer;"
+            onclick="search();"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+
+          <input
+            type="text"
+            id="searchInput"
+            name="search"
+            placeholder="Search Contacts"
+          >
+        </div>
+        <img id = "addContactImg" src ="images/add_contact.png" alt="add contact" width="50px" height="auto" 
+          onclick = "document.getElementById('modal').style.display = 'flex'"
+        >
+      </div>
+      
+      <div id = "resultsContainer">
+        <svg xmlns="http://www.w3.org/2000/svg" id = "scrollUpArrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"></line>
+          <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" id = "scrollDownArrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <polyline points="19 12 12 19 5 12"></polyline>
+        </svg>
+
+        <div id = "results"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <span class="close-btn" id="closeModal" onclick="document.getElementById('modal').style.display = 'none'">&times;</span>
+      <h2>Add Contact</h2>
+      <input type="text" placeholder="First Name" id="firstName">
+      <input type="text" placeholder="Last Name" id="lastName">
+      <input type="tel" placeholder="Phone" id="phone">
+      <input type="email" placeholder="Email" id="email">
+      <button id="saveContact" onclick="addContact();">Add</button>
+    </div>
+  </div>
+
+  <script>
+    const container = document.getElementById("results");
+    const upArrow = document.getElementById("scrollUpArrow");
+    const downArrow = document.getElementById("scrollDownArrow");
+
+    container.addEventListener("scroll", () => {
+      const atTop = container.scrollTop < 25;
+      const atBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 25;
+
+      // show downArrow if not at bottom
+      if (!atBottom) {  
+        downArrow.classList.add("show");
+      } else {
+        downArrow.classList.remove("show");
+      }
+
+      // show upArrow if not at top
+      if (!atTop) {
+        upArrow.classList.add("show");
+      } else {
+        upArrow.classList.remove("show");
+      }
+    });
+  </script>
+
+</body>
+</html>

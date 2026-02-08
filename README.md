@@ -87,7 +87,6 @@
   "id": "int",
   "firstName": "string",
   "lastName": "string",
-  "error": "string"
 }
 ```
 

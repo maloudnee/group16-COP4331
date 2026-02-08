@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Simple Page</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id = "loginDiv"> 
+    <img id="loginLogo" src="images/logo.png" alt= "logo">
+    <div>
+      <h1 id="loginTitle">Personal Contact Manager</h1>
+      <p id = "loginResult" class = "loginAndCreateAccountResult hidden"></p>
+    </div>
+    
+    <input
+      type="text"
+      id="loginUsername"
+      class = "loginInputs"
+      name="username"
+      placeholder="Username"
+    >
+    <input
+      type="password"
+      id="loginPassword"
+      class = "loginInputs"
+      name="password"
+      placeholder="Password"
+    >
+    <button id="createAccountNav" onclick="newAccountNav();">No profile? Create One</button>
+    <button id="loginButton" onclick="onLoginClick();">Log in</button>
+  </div>
+
+  <div id = "createAccountDiv" class = "hidden">
+    <div>
+      <h1 id = "createAccountTitle">Create an Account</h1>
+      <p id = "createAccountResult" class = "loginAndCreateAccountResult hidden"></p>
+    </div>
+    <input
+      type="text"
+      id="createAccountName"
+      class = "createAccountInputs"
+      name="name"
+      placeholder="Name"
+    >
+    <input
+      type="text"
+      id="createAccountUsername"
+      class = "createAccountInputs"
+      name="username"
+      placeholder="Username"
+    >
+    <input
+      type="password"
+      id="createAccountPassword"
+      class = "createAccountInputs"
+      name="password"
+      placeholder="Password"
+    >
+    <button id="backToLoginButton" onclick="onBackToLoginClick();">Back to login</button>
+    <button id="createAccountButton" onclick="onCreateAccountClick();">Sign Up</button>
+    
+  </div>
+
+  <div id = "toast"></div>
+
+  <script src="js/code.js"></script>
+</body>
+</html>
