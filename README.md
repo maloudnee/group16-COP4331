@@ -55,22 +55,22 @@
 **Request JSON**
 ```json
 {
-  "username": "string",
-  "password": "string"
+  "Login": "string",
+  "Password": "string"
 }
 ```
 
 **Response JSON**
 ```json
 {
-  "userID": "int",
-  "firstName": "string",
-  "lastName": "string",
-  "error": "string",
+  "ID": int,
+  "FirstName": "string",
+  "LastName": "string",
+  "error": "string"
 }
 ```
 
-### `SignUp.php`
+### `Register.php`
 
 **Request JSON**
 ```json
