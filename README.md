@@ -63,7 +63,7 @@
 **Response JSON**
 ```json
 {
-  "ID": int,
+  "ID": "int",
   "FirstName": "string",
   "LastName": "string",
   "error": "string"
