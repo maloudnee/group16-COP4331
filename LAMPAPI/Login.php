@@ -3,7 +3,7 @@
 
 	$inData = getRequestInfo();
 	
-	$id = 0;
+	$ID = 0;
 	$FirstName = "";
 	$LastName = "";
 
@@ -51,7 +51,7 @@
 	
 	function returnWithInfo( $FirstName, $LastName, $ID )
 	{
-		$retValue = '{"ID":' . $id . ',"FirstName":"' . $FirstName . '","LastName":"' . $LastName . '","error":""}';
+		$retValue = '{"ID":' . $ID . ',"FirstName":"' . $FirstName . '","LastName":"' . $LastName . '","error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 	

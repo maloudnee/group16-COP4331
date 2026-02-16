@@ -1,11 +1,10 @@
-
 <?php
 
 	$inData = getRequestInfo();
 	
-	$id = 0;
-	$firstName = "";
-	$lastName = "";
+	$ID = 0;
+	$FirstName = "";
+	$LastName = "";
 
 
 	$conn = new mysqli("localhost", "Laz", "COP4331-67", "ContactManager"); 	
@@ -24,7 +23,7 @@
 		{
             returnWithError("A user with this login already exists");
             exit();
-			// returnWithInfo( $row['firstName'], $row['lastName'], $row['ID'] );
+			// returnWithInfo( $row['FirstName'], $row['LastName'], $row['ID'] );
 		}
 		else
 		{
@@ -34,8 +33,8 @@
             $stmt->bind_param("ssss", $inData["FirstName"], $inData["LastName"], $inData["Login"], $inData["Password"]);
 
             $stmt->execute();
-            $id = $conn->insert_id;
-            returnWithInfo($inData["FirstName"], $inData["LastName"], $id);
+            $ID = $conn->insert_ID;
+            returnWithInfo($inData["FirstName"], $inData["LastName"], $ID);
 		}
 
 		$stmt->close();
@@ -55,13 +54,13 @@
 	
 	function returnWithError( $err )
 	{
-		$retValue = '{"ID":0,"firstName":"","lastName":"","error":"' . $err . '"}';
+		$retValue = '{"ID":0,"FirstName":"","LastName":"","error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
-	function returnWithInfo( $firstName, $lastName, $ID )
+	function returnWithInfo( $FirstName, $LastName, $ID )
 	{
-		$retValue = '{"ID":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
+		$retValue = '{"ID":' . $ID . ',"FirstName":"' . $FirstName . '","LastName":"' . $LastName . '","error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
