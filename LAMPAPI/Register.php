@@ -7,7 +7,7 @@
 	$LastName = "";
 
 
-	$conn = new mysqli("localhost", "Laz", "COP4331-67", "ContactManager"); 	
+	$conn = new mysqli("localhost", "root", "QWer!@12QW", "ContactManager");	
 	if( $conn->connect_error )
 	{
 		returnWithError( $conn->connect_error );
@@ -23,7 +23,6 @@
 		{
             returnWithError("A user with this login already exists");
             exit();
-			// returnWithInfo( $row['FirstName'], $row['LastName'], $row['ID'] );
 		}
 		else
 		{
