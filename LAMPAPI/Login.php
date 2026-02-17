@@ -7,9 +7,10 @@
 	$FirstName = "";
 	$LastName = "";
 
-	$conn = new mysqli("localhost", "root", "QWer!@12QW", "ContactManager");
+	$conn = new mysqli("localhost", "Laz", "COP4331-67", "ContactManager"); 
 	if( $conn->connect_error )
 	{
+		die("Connection failed: " . $conn->connect_error);
 		returnWithError( $conn->connect_error );
 	}
 	else
