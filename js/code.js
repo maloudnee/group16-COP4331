@@ -1,4 +1,4 @@
-const urlBase = 'http://167.172.25.45//LAMPAPI';
+const urlBase = 'http://138.197.69.14//CONTACTMANAGERAPI';
 const extension = 'php';
 
 let userId = 0;
@@ -16,20 +16,20 @@ function onLoginClick()
 	firstName = "";
 	lastName = "";
 	
-	let login = document.getElementById("loginUsername").value;
-	let password = document.getElementById("loginPassword").value;
-//	var hash = md5( password );
-	
-	document.getElementById("loginResult").innerHTML = "";
-	document.getElementById("loginResult").classList.remove("hidden");
+	let login = document.getElementById("loginUsername").value.trim();
+	let password = document.getElementById("loginPassword").value.trim();
 
-  /*
-  let tmp = {login:login,password:password};
-//	var tmp = {login:login,password:hash};
+  if ((login == "") || (password == ""))
+  {
+    return;
+  }
+
+	const loginResult = document.getElementById("loginResult");
+	loginResult.innerHTML = "";
+  
+  let tmp = {Login:login,Password:password};
 	let jsonPayload = JSON.stringify( tmp );
-	
 	let url = urlBase + '/Login.' + extension;
-
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -41,10 +41,12 @@ function onLoginClick()
 			{
 				let jsonObject = JSON.parse( xhr.responseText );
 				userId = jsonObject.id;
-		
-				if( userId < 1 )
+        const error = jsonObject.error;
+        
+				if(error !== "")
 				{		
-					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
+					loginResult.innerHTML = error;
+          loginResult.classList.remove("hidden")
 					return;
 				}
 		
@@ -52,25 +54,25 @@ function onLoginClick()
 				lastName = jsonObject.lastName;
 
 				saveCookie();
+
+        loginResult.innerHTML = "";
+        loginResult.classList.add("hidden");
 	
-				window.location.href = "color.html";
+				window.location.href = "contacts.html";
 			}
+      else 
+      {
+        loginResult.innerHTML = "Error contacting server";
+        loginResult.classList.remove("hidden")
+      }
 		};
 		xhr.send(jsonPayload);
 	}
 	catch(err)
 	{
-		document.getElementById("loginResult").innerHTML = err.message;
-	}
-  */
-
-  userId = 1;
-  firstName = "John"
-  lastName = "Alex"
-  saveCookie();
-  window.location.href = "contacts.html";
-	
-
+		loginResult.innerHTML = err.message;
+    loginResult.classList.remove("hidden")
+	}	
 }
 
 function newAccountNav () {
@@ -85,21 +87,83 @@ function onBackToLoginClick () {
 
 
 function onCreateAccountClick () { 
-  // assume that the account creation succedded
-  // then show a toast and return to the login page
+  const name = document.getElementById("createAccountName").value;
+  const username = document.getElementById("createAccountUsername").value.trim();
+  const password = document.getElementById("createAccountPassword").value.trim();
 
-  clearTimeout(toastTimeoutRef); 
-  const toast = document.getElementById("toast");
-  toast.innerHTML = "Account Created!";
-  toast.classList.add("show");
-  toastTimeoutRef = setTimeout(() => {
-    toast.classList.remove("show")
-  }, toastDuration)
+  if ((name == "") || (password == "") || (username == ""))
+  {
+    return;
+  }
 
+  // split the name into first and last name:
+  const parts = name.trim().split(/\s+/);
+  const firstName = parts[0];
+  const lastName = parts.length > 1 ? parts.slice(1).join(" ") : null;
+  if (lastName === null)
+  {
+    clearTimeout(toastTimeoutRef); 
+    const toast = document.getElementById("toast");
+    toast.innerHTML = "Include your full name!";
+    toast.classList.add("show");
+    toastTimeoutRef = setTimeout(() => {
+      toast.classList.remove("show")
+    }, toastDuration)
+    return;
+  }
 
-  document.getElementById("loginDiv").classList.remove("hidden");
-  document.getElementById("createAccountDiv").classList.add("hidden");
+	const createAccountResult = document.getElementById("createAccountResult");
+	createAccountResult.innerHTML = "";
+  
+  let tmp = {FirstName:firstName,LastName:lastName, Login:username, Password:password};
+	let jsonPayload = JSON.stringify( tmp );
+	let url = urlBase + '/Register.' + extension;
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				let jsonObject = JSON.parse( xhr.responseText );
+        const error = jsonObject.error;
+        
+				if(error !== "")
+				{		
+					createAccountResult.innerHTML = error;
+          createAccountResult.classList.remove("hidden")
+					return;
+				}
 
+        createAccountResult.innerHTML = "";
+        createAccountResult.classList.add("hidden");
+
+        clearTimeout(toastTimeoutRef); 
+        const toast = document.getElementById("toast");
+        toast.innerHTML = "Account Created!";
+        toast.classList.add("show");
+        toastTimeoutRef = setTimeout(() => {
+          toast.classList.remove("show")
+        }, toastDuration)
+
+        document.getElementById("loginDiv").classList.remove("hidden");
+        document.getElementById("createAccountDiv").classList.add("hidden");
+			}
+      else 
+      {
+        createAccountResult.innerHTML = "Error contacting server";
+        createAccountResult.classList.remove("hidden")
+      }
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		createAccountResult.innerHTML = err.message;
+    createAccountResult.classList.remove("hidden")
+	}	
 }
 
 function saveCookie() {

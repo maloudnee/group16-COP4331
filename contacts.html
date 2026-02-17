@@ -58,6 +58,7 @@
             id="searchInput"
             name="search"
             placeholder="Search Contacts"
+            autocomplete="off"
           >
         </div>
         <img id = "addContactImg" src ="images/add_contact.png" alt="add contact" width="50px" height="auto" 
@@ -87,10 +88,10 @@
     <div class="modal">
       <span class="close-btn" id="closeModal" onclick="document.getElementById('modal').style.display = 'none'">&times;</span>
       <h2>Add Contact</h2>
-      <input type="text" placeholder="First Name" id="firstName">
-      <input type="text" placeholder="Last Name" id="lastName">
-      <input type="tel" placeholder="Phone" id="phone">
-      <input type="email" placeholder="Email" id="email">
+      <input type="text" placeholder="First Name" id="firstName" autocomplete="off">
+      <input type="text" placeholder="Last Name" id="lastName" autocomplete="off">
+      <input type="tel" placeholder="Phone" id="phone" autocomplete="off">
+      <input type="email" placeholder="Email" id="email" autocomplete="off">
       <button id="saveContact" onclick="addContact();">Add</button>
     </div>
   </div>
