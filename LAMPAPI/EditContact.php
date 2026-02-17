@@ -2,9 +2,13 @@
 
 	$inData = getRequestInfo();
 	
-	$ID = 0;
+	$UserID = 0;
 	$FirstName = "";
 	$LastName = "";
+	$Phone = "";
+	$Email = "";
+	$UserID = 0;
+	$ID = 0;
 
 	$conn = new mysqli("localhost", "Laz", "COP4331-67", "ContactManager"); 	
 	if( $conn->connect_error )
@@ -13,27 +17,17 @@
 	}
 	else
 	{
-		$stmt = $conn->prepare("SELECT ID FROM Users WHERE Login=?");
-		$stmt->bind_param("s", $inData["Login"]);
-		$stmt->execute();
-		$result = $stmt->get_result();
+		$stmt = $conn->prepare("UPDATE Contacts SET FirstName=?, LastName=?, Phone=?, Email=? WHERE UserID=? AND ID=?");
 
-		if( $row = $result->fetch_assoc()  )
-		{
-            returnWithError("A user with this login already exists");
-            exit();
-		}
-		else
-		{
-            $stmt->close();
-			$stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssssii", $inData["FirstName"], $inData["LastName"], $inData["Phone"], $inData["Email"], $inData["UserID"], $inData["ID"]);
 
-            $stmt->bind_param("ssss", $inData["FirstName"], $inData["LastName"], $inData["Login"], $inData["Password"]);
+        $stmt->execute();
 
-            $stmt->execute();
-            $ID = $conn->insert_id;
+        if($stmt->affected_rows > 0){
             returnWithInfo($inData["FirstName"], $inData["LastName"], $ID);
-		}
+        } else {
+            returnWithError("No contact updated");
+        }
 
 		$stmt->close();
 		$conn->close();
