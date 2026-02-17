@@ -75,18 +75,20 @@
 **Request JSON**
 ```json
 {
-  "name": "string",
-  "username": "string",
-  "password": "string"
+  "FirstName": "string",
+  "LastName": "string",
+  "Login": "string",
+  "Password": "string"
 }
 ```
 
 **Response JSON**
 ```json
 {
-  "id": "int",
-  "firstName": "string",
-  "lastName": "string",
+  "ID": "int",
+  "FirstName": "string",
+  "LastName": "string",
+  "error": "string"
 }
 ```
 
