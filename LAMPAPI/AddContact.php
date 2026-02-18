@@ -23,7 +23,11 @@
 
         $stmt->execute();
         $ID = $conn->insert_id;
-        returnWithInfo($inData["FirstName"], $inData["LastName"], $ID);
+        if($stmt->affected_rows > 0){
+            returnWithInfo("Contact added successfully");
+        } else {
+            returnWithError("No contact added");
+        }
 		$stmt->close();
 		$conn->close();
 	}
@@ -41,13 +45,13 @@
 	
 	function returnWithError( $err )
 	{
-		$retValue = '{"ID":0,"FirstName":"","LastName":"","error":"' . $err . '"}';
+		$retValue = '{"error":"' . $err .'","message":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
-	function returnWithInfo( $FirstName, $LastName, $ID )
+	function returnWithInfo($message)
 	{
-		$retValue = '{"ID":' . $ID . ',"FirstName":"' . $FirstName . '","LastName":"' . $LastName . '","error":""}';
+		$retValue = '{"error":"","message":"' . $message . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
