@@ -13,8 +13,10 @@
     else 
     {
         $stmt = $conn->prepare("SELECT FirstName, LastName, Phone, Email FROM Contacts WHERE UserID=? AND (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ?)");
-        $searchTerm = "%" . $indata["search"] . "%";
-        $stmt->bind_param("isss", $indata["userId"], $searchTerm, $searchTerm, $searchTerm);
+        $userId = isset($indata["userId"]) ? intval($indata["userId"]) : 0;
+        $search = isset($indata["search"]) ? $indata["search"] : "";
+        $searchTerm = "%" . $search . "%";
+        $stmt->bind_param("isss", $userId, $searchTerm, $searchTerm, $searchTerm);
         $stmt->execute();
         $result = $stmt->get_result();
         if(!$result){
@@ -32,7 +34,7 @@
 
         if ($searchCount == 0)
         {
-            returnWithError("No Records Found");
+            returnWithInfo("");
         }
         else
         {

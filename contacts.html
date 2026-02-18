@@ -7,6 +7,7 @@
 	<script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
       readCookie();
+      searchContacts();
     }, false);
 
     
@@ -61,6 +62,7 @@
             autocomplete="off"
           >
         </div>
+        
         <img id = "addContactImg" src ="images/add_contact.png" alt="add contact" width="50px" height="auto" 
           onclick = "document.getElementById('modal').style.display = 'flex'"
         >
