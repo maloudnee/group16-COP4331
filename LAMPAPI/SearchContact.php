@@ -6,21 +6,20 @@
     $searchCount = 0;
 
     $conn = new mysqli("localhost", "root", "QWer!@12QW", "ContactManager");
-
     if ($conn->connect_error)
     {
         returnWithError( $conn->connect_error );
     }
     else 
     {
-        $stmt = $conn->prepare("SELECT FirstName, LastName, Phone, Email FROM Contacts WHERE UserID=? AND (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ? OR Phone LIKE ?)");
+        $stmt = $conn->prepare("SELECT FirstName, LastName, Phone, Email FROM Contacts WHERE UserID=? AND (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ?)");
         $searchTerm = "%" . $indata["search"] . "%";
         $stmt->bind_param("isss", $indata["userId"], $searchTerm, $searchTerm, $searchTerm);
-        
         $stmt->execute();
         $result = $stmt->get_result();
-        
-        $rows=[]
+        if(!$result){
+            returnWithError("Query failed: " . $stmt->error);
+        }
         while($row = $result->fetch_assoc())
         {
             if ($searchCount > 0)
@@ -47,7 +46,11 @@
     {
         return json_decode(file_get_contents('php://input'), true);
     }
-
+    function sendResultInfoAsJson( $obj )
+	{
+		header('Content-type: application/json');
+		echo $obj;
+	}
     function returnWithError($err)
     {
         $retValue = '{"id":0, "firstName":"","lastName":"","phone":"","email":"","error":"' . $err . '"}';
