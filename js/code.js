@@ -306,7 +306,9 @@ function searchContacts() {
       phone.classList.add("input-focus");
       email.classList.add("input-focus");
     }
+
     
+
     // the save button which saves edits from the user (shown after clicking the edit button)
     saveContact.className = "save-contact hidden";
     saveContact.innerHTML = "Save";
