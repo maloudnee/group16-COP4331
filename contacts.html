@@ -1,6 +1,7 @@
 <html>
 <head>
 	<title>User Contacts</title>
+  <meta name="description" content="User interface for the contact manager">
 	<script type="text/javascript" src="js/code.js"></script>
     <link href="css/styles.css" rel="stylesheet">	
 	
@@ -9,17 +10,18 @@
       readCookie();
     }, false);
 
-    
     document.addEventListener("keydown", (e) => {
       const text = document.getElementById("searchInput").value;
       if ((e.key === "Enter") && (text.trim() !== "") && (document.activeElement.id === "searchInput")) {
+        e.preventDefault();
         searchContacts();
       }
     });
+    
 
     function search () {
-      const text = document.getElementById("searchInput").value;
-      if (text.trim() !== ""){
+      const text = document.getElementById("searchInput").value.trim();
+      if (text !== ""){
         searchContacts();
       }
     }
@@ -78,6 +80,7 @@
         </svg>
 
         <div id = "results"></div>
+        <p id = "noResults" class="noResultsText hidden">No Contacts Found</p>
       </div>
 
     </div>
@@ -88,10 +91,10 @@
     <div class="modal">
       <span class="close-btn" id="closeModal" onclick="document.getElementById('modal').style.display = 'none'">&times;</span>
       <h2>Add Contact</h2>
-      <input type="text" placeholder="First Name" id="firstName" autocomplete="off">
-      <input type="text" placeholder="Last Name" id="lastName" autocomplete="off">
-      <input type="tel" placeholder="Phone" id="phone" autocomplete="off">
-      <input type="email" placeholder="Email" id="email" autocomplete="off">
+      <input type="text" placeholder="First Name *" id="firstName" autocomplete="off">
+      <input type="text" placeholder="Last Name *" id="lastName" autocomplete="off">
+      <input type="tel" placeholder="Phone *" id="phone" autocomplete="off">
+      <input type="email" placeholder="Email *" id="email" autocomplete="off">
       <button id="saveContact" onclick="addContact();">Add</button>
     </div>
   </div>
@@ -120,6 +123,7 @@
       }
     });
   </script>
+  <div id="toast"></div>
 
 </body>
 </html>

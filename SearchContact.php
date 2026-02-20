@@ -5,7 +5,7 @@
     $searchResults = "";
     $searchCount = 0;
 
-    $conn = new mysqli("localhost", "root", "QWer!@12QW", "ContactManager");
+    $conn = new mysqli("localhost", "Laz", "COP4331-67", "ContactManager");
 
     if ($conn->connect_error)
     {
@@ -13,21 +13,20 @@
     }
     else 
     {
-        $stmt = $conn->prepare("SELECT FirstName, LastName, Phone, Email FROM Contacts WHERE UserID=? AND (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ? OR Phone LIKE ?)");
+        $stmt = $conn->prepare("SELECT FirstName, LastName, Phone, Email, ID FROM Contacts WHERE UserID=? AND (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ? OR Phone LIKE ?)");
         $searchTerm = "%" . $indata["search"] . "%";
-        $stmt->bind_param("isss", $indata["userId"], $searchTerm, $searchTerm, $searchTerm);
+        $stmt->bind_param("issss", $indata["userId"], $searchTerm, $searchTerm, $searchTerm, $searchTerm);
         
         $stmt->execute();
         $result = $stmt->get_result();
         
-        $rows=[]
         while($row = $result->fetch_assoc())
         {
             if ($searchCount > 0)
             {
                 $searchResults .= ",";
             }
-            $searchResults .= '{"FirstName":"' . $row["FirstName"] . '","LastName":"' . $row["LastName"] . '","Phone":"' . $row["Phone"] . '","Email":"' . $row["Email"] . '"}';
+            $searchResults .= '{"FirstName":"' . $row["FirstName"] . '","LastName":"' . $row["LastName"] . '","Phone":"' . $row["Phone"] . '","Email":"' . $row["Email"] . '", "ID": "' . $row["ID"] . '"}';
             $searchCount++;
         }
 
@@ -46,6 +45,11 @@
     function getRequestInfo()
     {
         return json_decode(file_get_contents('php://input'), true);
+    }
+    function sendResultInfoAsJson( $obj )
+    {
+        header('Content-type: application/json');
+        echo $obj;
     }
 
     function returnWithError($err)

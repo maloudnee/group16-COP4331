@@ -306,8 +306,27 @@ body {
   
 }
 
-.edit-contact {
+.noResultsText {
+  font-size: 15px;
+  color: black;
+  text-align: center;
+}
+
+.edit-delete-div {
+  display: flex;
+  gap: 24px;
+}
+
+.delete-contact {
   margin-right: 20px;
+  cursor: pointer;
+
+}
+.delete-contact:hover svg {
+  stroke: rgb(80, 80, 80);
+} 
+
+.edit-contact {
   height: 25px;
   cursor: pointer;
 }
