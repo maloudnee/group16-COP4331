@@ -172,31 +172,10 @@
       "phone": "string",
       "email": "string",
       "contactID": "int",
-      "error": "string"
     }
-  ]
-}
-```
-
-### `SearchContacts.php`
-
-**Request JSON**
-```json
-{
-  "userID": "int",
-  "firstName": "string",
-  "lastName": "string",
-  "phone": "string",
-  "email": "string"
-}
-```
-
-**Response JSON**
-```json
-{
+  ],
   "error": "string"
 }
 ```
 
-### add other endpoints
 
