@@ -1,4 +1,4 @@
-const urlBase = 'http://138.197.69.14//CONTACTMANAGERAPI';
+const urlBase = 'https://contactmanager-cop4331.xyz/';
 const extension = 'php';
 
 let userId = 0;
