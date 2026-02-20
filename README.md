@@ -92,6 +92,66 @@
 }
 ```
 
+### `AddContact.php`
+
+**Request JSON**
+```json
+{
+  "FirstName": "string",
+  "LastName": "string",
+  "Phone": "string",
+  "Email": "string",
+  "UserID": "int",
+}
+```
+
+**Response JSON**
+```json
+{
+  "error": "string",
+  "message": "string"
+}
+```
+
+### `EditContact.php`
+
+**Request JSON**
+```json
+{
+  "FirstName": "string",
+  "LastName": "string",
+  "Phone": "string",
+  "Email": "string",
+  "UserID": "int",
+  "ID": "int"
+}
+```
+
+**Response JSON**
+```json
+{
+  "error": "string",
+  "message": "string"
+}
+```
+
+### `DeleteContact.php`
+
+**Request JSON**
+```json
+{
+  "UserID": "int",
+  "ID": "int"
+}
+```
+
+**Response JSON**
+```json
+{
+  "error": "string",
+  "message": "string"
+}
+```
 ### `SearchContacts.php`
 
 **Request JSON**
