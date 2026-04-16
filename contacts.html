@@ -68,6 +68,16 @@
           onclick = "document.getElementById('modal').style.display = 'flex'"
         >
       </div>
+
+      <div id="sortControls" class="hidden">
+        <label for="sortSelect">Sort by:</label>
+        <select id="sortSelect" onchange="onSortChange()">
+          <option value="name-asc">Name (A–Z)</option>
+          <option value="name-desc">Name (Z–A)</option>
+          <option value="last-asc">Last Name (A–Z)</option>
+          <option value="last-desc">Last Name (Z–A)</option>
+        </select>
+      </div>
       
       <div id = "resultsContainer">
         <svg xmlns="http://www.w3.org/2000/svg" id = "scrollUpArrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

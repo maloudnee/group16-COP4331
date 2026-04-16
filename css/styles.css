@@ -235,6 +235,32 @@ body {
   outline: none;
 }
 
+
+#sortControls {
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+#sortSelect {
+  font-family: monospace;
+  font-size: 16px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 2px solid #c2531c;
+  background-color: #ffb153;
+}
+
+#sortSelect:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.3);
+}
+
 #resultsContainer {
   margin-left: auto;
   margin-right: auto;
