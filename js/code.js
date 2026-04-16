@@ -185,14 +185,16 @@ function readCookie() {
 
 function searchContacts() {
 
-  // execute the followign code when a successful api response with results
-	let search = document.getElementById("searchInput").value;
+  let search = document.getElementById("searchInput").value.trim();
 
   const container = document.getElementById("resultsContainer");
   const resultsContainer = document.getElementById("results");
+  const sortControls = document.getElementById("sortControls");
+
   resultsContainer.classList.add("hidden");
-  
-  document.querySelectorAll(".contact-card").forEach(card => card.remove());
+  document.getElementById("noResults").classList.add("hidden");
+  sortControls.classList.add("hidden");
+  clearRenderedContacts();
 
   let tmp = {userId:userId,search:search};
 	let jsonPayload = JSON.stringify( tmp );
@@ -215,252 +217,23 @@ function searchContacts() {
 					showToast(error)
 					return;
 				}
-        searchResults = jsonObject.results;
-        // searchResults = [{FirstName, LastName, Phone, Email, ID},...]
+
+        searchResults = jsonObject.results || [];
+        container.style.display = "block";
 
         if (searchResults.length === 0) {
-            container.style.display = "block";
-            resultsContainer.classList.add("hidden")
-            document.getElementById("noResults").classList.remove("hidden")
+            resultsContainer.classList.add("hidden");
+            document.getElementById("noResults").classList.remove("hidden");
             document.getElementById("scrollUpArrow").classList.remove("show");
             document.getElementById("scrollDownArrow").classList.remove("show");
             return;
         }
 
-        container.style.display = "block";
-        document.getElementById("noResults").classList.add("hidden")
         document.getElementById("searchArea").style.paddingTop = "50px";
-        resultsContainer.classList.remove("hidden")
-        
-        searchResults.forEach(contact => {
-          const card = document.createElement("div");
-          card.className = "contact-card";
-          card.id = `contact${contact.ID}`
-
-          // the data part of the contact card: includes contact name, phone, and email
-          const contactData = document.createElement("div");
-          contactData.className = "contact-data";
-          
-          const name = document.createElement("input");
-          name.className = "contact-name";
-          name.value = contact.FirstName + " " + contact.LastName;
-          name.readOnly = true; 
-
-          const phone = document.createElement("input");
-          phone.className = "contact-info";
-          phone.value = contact.Phone;
-          phone.readOnly = true; 
-
-          const email = document.createElement("input");
-          email.className = "contact-info";
-          email.value = contact.Email;
-          email.readOnly = true; 
-
-          contactData.appendChild(name);
-          contactData.appendChild(phone);
-          contactData.appendChild(email);
-
-          const editDeleteDiv = document.createElement("div");
-          editDeleteDiv.className = "edit-delete-div"
-          const editContact = document.createElement("div");
-          const deleteContact = document.createElement("div");
-
-          const saveContact = document.createElement("div");
-
-          editContact.className = "edit-contact";
-          editContact.innerHTML = `
-          <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-          >
-              <path d="M12 20h9" />
-              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
-          </svg>
-          `
-          let contactNameTemp;
-          let contactPhoneTemp;
-          let contactEmailTemp;
-
-          editContact.onclick = function () {
-            contactNameTemp = name.value;
-            contactPhoneTemp = phone.value;
-            contactEmailTemp = email.value;      
-
-            editContact.classList.add("hidden");
-            deleteContact.classList.add("hidden")
-            saveContact.classList.remove("hidden");
-
-            name.readOnly = false;
-            phone.readOnly = false;
-            email.readOnly = false;
-
-            name.classList.add("input-focus");
-            phone.classList.add("input-focus");
-            email.classList.add("input-focus");
-          }
-
-          deleteContact.className = "delete-contact";
-          deleteContact.innerHTML = `
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-label="Delete"
-          >
-            <!-- Lid -->
-            <path d="M3 6h18" />
-            <path d="M8 6V4h8v2" />
-
-            <!-- Bin -->
-            <path d="M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" />
-
-            <!-- Lines inside -->
-            <path d="M10 11v6" />
-            <path d="M14 11v6" />
-          </svg>
-
-          `
-
-          deleteContact.onclick = function () {
-            // popup confirmation
-            if (!confirm("Delete contact?")){
-              return;
-            }
-
-            let tmp = {UserID:userId, ID: contact.ID};
-            let jsonPayload = JSON.stringify( tmp );
-            let url = urlBase + '/DeleteContact.' + extension;
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-            try
-            {
-              xhr.onreadystatechange = function() 
-              {
-                if (this.readyState == 4 && this.status == 200) 
-                {
-                  let jsonObject = JSON.parse( xhr.responseText );
-
-                  const error = jsonObject.error;
-                  
-                  if(error !== "")
-                  {		
-                    showToast("Error deleting contact")
-                    return;
-                  }
-                  
-                  document.getElementById(`contact${contact.ID}`)?.remove();
-
-                }
-              };
-              xhr.send(jsonPayload);
-            }
-            catch(err)
-            {
-              showToast("Error deleting contact")
-            }
-          }
-          
-          // the save button which saves edits from the user (shown after clicking the edit button)
-          saveContact.className = "save-contact hidden";
-          saveContact.innerHTML = "Save";
-          saveContact.onclick = function () {
-            // send http request with contact id, name, phone, email
-            // if succeeds, do nothing
-            // if fails, return the values in the name, phone, emails to the temp
-            saveContact.classList.add("hidden");
-            editContact.classList.remove("hidden");
-            deleteContact.classList.remove("hidden");
-
-            name.readOnly = true;
-            phone.readOnly = true;
-            email.readOnly = true;
-
-            name.classList.remove("input-focus");
-            phone.classList.remove("input-focus");
-            email.classList.remove("input-focus");
-
-            // write the http request here:
-            // if saved correctly, do nothing
-            // if error then show toast and revert back to previous values
-
-            const fullName = name.value.trim();
-            const parts = fullName.trim().split(/\s+/);
-            const firstName = parts[0];
-            const lastName = parts.length > 1 ? parts.slice(1).join(" ") : "";
-            
-            let tmp = {FirstName:firstName,LastName:lastName, Phone:phone.value.trim(), Email: email.value.trim(), UserID: userId, ID: contact.ID};
-            let jsonPayload = JSON.stringify( tmp );
-            let url = urlBase + '/EditContact.' + extension;
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-            try
-            {
-              xhr.onreadystatechange = function() 
-              {
-                if (this.readyState == 4 && this.status == 200) 
-                {
-                  let jsonObject = JSON.parse( xhr.responseText );
-
-                  const error = jsonObject.error;
-                  
-                  if(error !== "")
-                  {		
-                    if (error == "No contact updated")
-                    {
-                      return;
-                    }
-                    name.value = contactNameTemp;
-                    phone.value = contactPhoneTemp;
-                    email.value = contactEmailTemp;
-                    showToast("Error Editing Contact")
-                    
-                  }
-                }
-              };
-              xhr.send(jsonPayload);
-            }
-            catch(err)
-            {
-              name.value = contactNameTemp;
-              phone.value = contactPhoneTemp;
-              email.value = contactEmailTemp;
-              showToast("Error Occured")
-            }
-          }
-
-          editDeleteDiv.appendChild(editContact);
-          editDeleteDiv.appendChild(deleteContact);
-
-          card.appendChild(contactData);
-          card.appendChild(editDeleteDiv);
-          card.appendChild(saveContact);
-
-          resultsContainer.appendChild(card);
-
-        });
-
-        document.getElementById("scrollUpArrow").classList.remove("show");
-        if ((resultsContainer.scrollHeight > resultsContainer.clientHeight + 5)) {
-            document.getElementById("scrollDownArrow").classList.add("show")
-        }	
-        else {
-            document.getElementById("scrollDownArrow").classList.remove("show")
-        }
+        resultsContainer.classList.remove("hidden");
+        sortControls.classList.remove("hidden");
+        sortContacts();
+        renderContacts();
 			}
 		};
 
@@ -470,6 +243,292 @@ function searchContacts() {
 	{
 		showToast("Error Occured")
 	}	
+}
+
+function clearRenderedContacts() {
+  document.querySelectorAll(".contact-card").forEach(card => card.remove());
+}
+
+function getSortValue() {
+  const sortSelect = document.getElementById("sortSelect");
+  return sortSelect ? sortSelect.value : "name-asc";
+}
+
+function compareText(a, b) {
+  return a.localeCompare(b, undefined, { sensitivity: "base" });
+}
+
+function sortContacts() {
+  const sortValue = getSortValue();
+
+  searchResults.sort((a, b) => {
+    const fullNameA = `${a.FirstName} ${a.LastName}`.trim();
+    const fullNameB = `${b.FirstName} ${b.LastName}`.trim();
+    const firstNameComparison = compareText(a.FirstName || "", b.FirstName || "");
+    const lastNameComparison = compareText(a.LastName || "", b.LastName || "");
+    const fullNameComparison = compareText(fullNameA, fullNameB);
+
+    switch (sortValue) {
+      case "name-desc":
+        return fullNameComparison * -1;
+      case "last-asc":
+        return lastNameComparison !== 0 ? lastNameComparison : firstNameComparison;
+      case "last-desc":
+        return lastNameComparison !== 0 ? lastNameComparison * -1 : firstNameComparison * -1;
+      case "name-asc":
+      default:
+        return fullNameComparison;
+    }
+  });
+}
+
+function onSortChange() {
+  if (searchResults.length === 0) {
+    return;
+  }
+
+  sortContacts();
+  renderContacts();
+}
+
+function updateScrollIndicators() {
+  const resultsContainer = document.getElementById("results");
+  const upArrow = document.getElementById("scrollUpArrow");
+  const downArrow = document.getElementById("scrollDownArrow");
+
+  upArrow.classList.remove("show");
+  if ((resultsContainer.scrollHeight > resultsContainer.clientHeight + 5)) {
+    downArrow.classList.add("show");
+  }
+  else {
+    downArrow.classList.remove("show");
+  }
+}
+
+function renderContacts() {
+  const resultsContainer = document.getElementById("results");
+  clearRenderedContacts();
+
+  searchResults.forEach(contact => {
+    const card = document.createElement("div");
+    card.className = "contact-card";
+    card.id = `contact${contact.ID}`;
+
+    const contactData = document.createElement("div");
+    contactData.className = "contact-data";
+
+    const name = document.createElement("input");
+    name.className = "contact-name";
+    name.value = `${contact.FirstName} ${contact.LastName}`.trim();
+    name.readOnly = true;
+
+    const phone = document.createElement("input");
+    phone.className = "contact-info";
+    phone.value = contact.Phone;
+    phone.readOnly = true;
+
+    const email = document.createElement("input");
+    email.className = "contact-info";
+    email.value = contact.Email;
+    email.readOnly = true;
+
+    contactData.appendChild(name);
+    contactData.appendChild(phone);
+    contactData.appendChild(email);
+
+    const editDeleteDiv = document.createElement("div");
+    editDeleteDiv.className = "edit-delete-div";
+    const editContact = document.createElement("div");
+    const deleteContact = document.createElement("div");
+    const saveContact = document.createElement("div");
+
+    editContact.className = "edit-contact";
+    editContact.innerHTML = `
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    >
+        <path d="M12 20h9" />
+        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+    </svg>
+    `;
+    let contactNameTemp;
+    let contactPhoneTemp;
+    let contactEmailTemp;
+
+    editContact.onclick = function () {
+      contactNameTemp = name.value;
+      contactPhoneTemp = phone.value;
+      contactEmailTemp = email.value;
+
+      editContact.classList.add("hidden");
+      deleteContact.classList.add("hidden");
+      saveContact.classList.remove("hidden");
+
+      name.readOnly = false;
+      phone.readOnly = false;
+      email.readOnly = false;
+
+      name.classList.add("input-focus");
+      phone.classList.add("input-focus");
+      email.classList.add("input-focus");
+    };
+
+    deleteContact.className = "delete-contact";
+    deleteContact.innerHTML = `
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-label="Delete"
+    >
+      <path d="M3 6h18" />
+      <path d="M8 6V4h8v2" />
+      <path d="M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" />
+      <path d="M10 11v6" />
+      <path d="M14 11v6" />
+    </svg>
+    `;
+
+    deleteContact.onclick = function () {
+      if (!confirm("Delete contact?")) {
+        return;
+      }
+
+      let tmp = {UserID:userId, ID: contact.ID};
+      let jsonPayload = JSON.stringify(tmp);
+      let url = urlBase + '/DeleteContact.' + extension;
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+      try
+      {
+        xhr.onreadystatechange = function()
+        {
+          if (this.readyState == 4 && this.status == 200)
+          {
+            let jsonObject = JSON.parse(xhr.responseText);
+            const error = jsonObject.error;
+
+            if (error !== "")
+            {
+              showToast("Error deleting contact");
+              return;
+            }
+
+            searchResults = searchResults.filter(result => String(result.ID) !== String(contact.ID));
+            document.getElementById(`contact${contact.ID}`)?.remove();
+
+            if (searchResults.length === 0) {
+              document.getElementById("results").classList.add("hidden");
+              document.getElementById("sortControls").classList.add("hidden");
+              document.getElementById("noResults").classList.remove("hidden");
+              document.getElementById("scrollUpArrow").classList.remove("show");
+              document.getElementById("scrollDownArrow").classList.remove("show");
+            } else {
+              renderContacts();
+            }
+          }
+        };
+        xhr.send(jsonPayload);
+      }
+      catch(err)
+      {
+        showToast("Error deleting contact");
+      }
+    };
+
+    saveContact.className = "save-contact hidden";
+    saveContact.innerHTML = "Save";
+    saveContact.onclick = function () {
+      saveContact.classList.add("hidden");
+      editContact.classList.remove("hidden");
+      deleteContact.classList.remove("hidden");
+
+      name.readOnly = true;
+      phone.readOnly = true;
+      email.readOnly = true;
+
+      name.classList.remove("input-focus");
+      phone.classList.remove("input-focus");
+      email.classList.remove("input-focus");
+
+      const fullName = name.value.trim();
+      const parts = fullName.trim().split(/\s+/);
+      const firstName = parts[0] || "";
+      const lastName = parts.length > 1 ? parts.slice(1).join(" ") : "";
+
+      let tmp = {FirstName:firstName, LastName:lastName, Phone:phone.value.trim(), Email:email.value.trim(), UserID:userId, ID:contact.ID};
+      let jsonPayload = JSON.stringify(tmp);
+      let url = urlBase + '/EditContact.' + extension;
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+      try
+      {
+        xhr.onreadystatechange = function()
+        {
+          if (this.readyState == 4 && this.status == 200)
+          {
+            let jsonObject = JSON.parse(xhr.responseText);
+            const error = jsonObject.error;
+
+            if (error !== "")
+            {
+              if (error == "No contact updated")
+              {
+                return;
+              }
+              name.value = contactNameTemp;
+              phone.value = contactPhoneTemp;
+              email.value = contactEmailTemp;
+              showToast("Error Editing Contact");
+              return;
+            }
+
+            contact.FirstName = firstName;
+            contact.LastName = lastName;
+            contact.Phone = phone.value.trim();
+            contact.Email = email.value.trim();
+            sortContacts();
+            renderContacts();
+          }
+        };
+        xhr.send(jsonPayload);
+      }
+      catch(err)
+      {
+        name.value = contactNameTemp;
+        phone.value = contactPhoneTemp;
+        email.value = contactEmailTemp;
+        showToast("Error Occured");
+      }
+    };
+
+    editDeleteDiv.appendChild(editContact);
+    editDeleteDiv.appendChild(deleteContact);
+
+    card.appendChild(contactData);
+    card.appendChild(editDeleteDiv);
+    card.appendChild(saveContact);
+
+    resultsContainer.appendChild(card);
+  });
+
+  updateScrollIndicators();
 }
 
 
