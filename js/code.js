@@ -216,6 +216,9 @@ function searchContacts() {
 					return;
 				}
         searchResults = jsonObject.results;
+        const pageSize = 10;
+        const pagedResults = searchResults.slice(0, pageSize);
+
         // searchResults = [{FirstName, LastName, Phone, Email, ID},...]
 
         if (searchResults.length === 0) {
@@ -232,7 +235,7 @@ function searchContacts() {
         document.getElementById("searchArea").style.paddingTop = "50px";
         resultsContainer.classList.remove("hidden")
         
-        searchResults.forEach(contact => {
+        pagedResults.forEach(contact => {
           const card = document.createElement("div");
           card.className = "contact-card";
           card.id = `contact${contact.ID}`
@@ -251,8 +254,9 @@ function searchContacts() {
           phone.value = contact.Phone;
           phone.readOnly = true; 
 
-          const email = document.createElement("input");
+          const email = document.createElement("div");
           email.className = "contact-info";
+          email.innerHTML = `<a href="mailto:${contact.Email}">${contact.Email}</a>`;
           email.value = contact.Email;
           email.readOnly = true; 
 
@@ -291,7 +295,7 @@ function searchContacts() {
           editContact.onclick = function () {
             contactNameTemp = name.value;
             contactPhoneTemp = phone.value;
-            contactEmailTemp = email.value;      
+            contactEmailTemp = email.innerText;      
 
             editContact.classList.add("hidden");
             deleteContact.classList.add("hidden")
@@ -299,7 +303,7 @@ function searchContacts() {
 
             name.readOnly = false;
             phone.readOnly = false;
-            email.readOnly = false;
+            email.contentEditable = true;
 
             name.classList.add("input-focus");
             phone.classList.add("input-focus");
@@ -387,7 +391,7 @@ function searchContacts() {
 
             name.readOnly = true;
             phone.readOnly = true;
-            email.readOnly = true;
+            email.contentEditable = false;
 
             name.classList.remove("input-focus");
             phone.classList.remove("input-focus");
